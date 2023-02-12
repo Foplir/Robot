@@ -20,6 +20,7 @@ int distFA;
 int distFB;
 
 void setup() {
+  
   //настройка пинов
   pinMode(motorA, OUTPUT);
   pinMode(motorB, OUTPUT);
@@ -38,17 +39,27 @@ void setup() {
 }
 
 void loop() {
+  
   //считывание волны
   durationFA = pulseIn(sensorFA, HIGH);
-  duratioFB = pulseIn(echo, HIGH);
+  durationFB = pulseIn(sensorFB, HIGH);
   
   //преобразование значения датчиков в см 
   distFA = (durationFA/2)/29;
-  distFB = (duratioFB/2)/29;
+  distFB = (durationFB/2)/29;
 
   //вывод расстояния в консоль
-  Serial.println("{",distFA, "} {", distFB, "}");
+  Serial.println("{");
+  Serial.print(distFA);
+  Serial.print("} {");
+  Serial.print(distFB);
+  Serial.print("}");
   
   //задержка для корректной работы датчиков
   delay(100);
+}
+
+void yield(){
+
+
 }
