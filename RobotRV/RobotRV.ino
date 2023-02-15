@@ -1,16 +1,17 @@
 /* Импорт библиотек*/
 #include "math.h"
 
+
 /* Устанавливаем значение переменных */
 
 /* Значения пинов */
-byte motorA;
-byte motorB;
-byte sensorFA;
-byte sensorFB;
-byte sensorBA;
-byte sensorBB;
-byte sensorColor;
+#define motorA 1
+#define motorB 2
+#define sensorFA 3
+#define sensorFB 4
+#define sensorBA 5
+#define sensorBB 6
+#define sensorColor 7
 
 /* Остальные значения */
 int durationFA;
