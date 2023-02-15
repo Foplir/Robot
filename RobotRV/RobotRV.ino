@@ -14,10 +14,10 @@ byte sensorBB;
 byte sensorColor;
 
 /* Остальные значения */
-int durationFA;
-int durationFB;
-int distFA;
-int distFB;
+float durationFA;
+float durationFB;
+float distFA;
+float distFB;
 
 void setup() {
   
@@ -38,6 +38,11 @@ void setup() {
   Serial.begin(9600);
 }
 
+//функция для преобразования значения датчикав см
+float toCm(float duration){
+  return (duration/2)/29;
+};
+
 void loop() {
   
   //считывание волны
@@ -45,8 +50,26 @@ void loop() {
   durationFB = pulseIn(sensorFB, HIGH);
   
   //преобразование значения датчиков в см 
-  distFA = (durationFA/2)/29;
-  distFB = (durationFB/2)/29;
+  distFA = toCm(durationFA);
+  distFB = toCm(durationFA);
+
+  //противник найден
+  while(distFA>0 && distFB>0){
+    //ехать вперед
+
+  };
+
+  //противник ушел влево
+  while(distFA>0 && distFB<=0){
+    //поворачивать влево
+
+  };
+
+  //противник ушел вправо
+  while(distFA<=0 && distFB>0){
+    //поворачивать вправо
+
+  };
 
   //вывод расстояния в консоль
   Serial.println("{");
