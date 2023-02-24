@@ -24,9 +24,8 @@ int echoPinRB = 17;
 int trigPinLB = 18;
 int trigPinLB = 19;
 
+
 byte bufferCheck;
-int distanceR, distanceL;
-int duration;
 int LightSensorPin = 1;
 
 DynamixelWorkbench motor;
@@ -50,61 +49,64 @@ void setup()
   motor.ping(second);
   motor.wheelMode(first, 0);
   motor.wheelMode(second, 0);     
-  //delay(5000);
+  delay(5000);
 }
 
 void loop() 
 {
-  switch(check(dist(trigRF, echoRF), dist(trigLF, echoLF), dist(trigRB, echoRB), dist(trigLB, echoLB)))
+  switch(FB(dist(trigRF, echoRF), dist(trigLF, echoLF), dist(trigRB, echoRB), dist(trigLB, echoLB)))
   {
-    case 1:
-      //правый спереди
-      motor.goalVelocity(first, (int32_t)-speed);
-      motor.goalVelocity(second, (int32_t)speed);
+    case true:
+      //спереди
+      if RL(dist(trigRF, echoRF), dist(trigLF, echoLF)) 
       break;
 
-    case 2:
-      //левый спереди
+    case false:
+      //взади
       break;
 
-    case 3:
-      //правый взади
-      break;
-
-    case 4:
-      //левый взади
-      break;
   }
 
 }
 
 /*
-(1) - меньшее значение на правом спереди
-(2) - меньшее значение на левом спереди
-
-(3) - меньшее значение на правом взади
-(4) - меньшее значение на левом взади
-
-подавать значение в след. порядке: 1-П_спереди, 2-Л_спереди, 3-П_взади, 4-Л_взади
+(true) - переднее значение меньше
+(false) - заднее значение меньше
 */
-int check(int RF, int LF, int RB, int LB)
+bool FB(int RF, int LF, int RB, int LB)
 {
   if (min(RF, LF) < min(RB, LB)){
-    if (RF < LF){
-      return 1
-    } else {
-      return 2
-    }
-  } else {
-    if (RB < LB){
-      return 3
-    } else {
-      return 4
-    }
-  }
-    
+      return true;
+  } else return false;
 }
 
+/*
+(true) - правое значение меньше
+(false) - левое значение меньше
+*/
+bool RL(int R, int L)
+{
+  if (R<L){
+    return true;
+  } else return false;
+}
+
+void motorL(){
+  motor.goalVelocity(first, (int32_t)-speed);
+  motor.goalVelocity(second, (int32_t)speed);
+}
+void motorR(){
+  motor.goalVelocity(first, (int32_t)speed);
+  motor.goalVelocity(second, (int32_t)-speed);  
+}
+void motorF(){
+  motor.goalVelocity(first, (int32_t)speed);
+  motor.goalVelocity(second, (int32_t)speed);
+}
+void motorB(){
+  motor.goalVelocity(first, (int32_t)-speed);
+  motor.goalVelocity(second, (int32_t)-speed);  
+}
 
 int dist(int trigPin, int echoPin)
 {
